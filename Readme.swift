@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  MyOtpView
-//
-//  Created by prakhar.unofficial on 18/08/24.
-//
 
 # SwiftUI OTP Field
 
@@ -25,5 +19,5 @@ Add the following to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/SwiftUIOTPField.git", from: "1.0.0")
+    .package(url: "https://github.com/pgupta4896/MyOTPField.git", from: "1.0.0")
 ]
