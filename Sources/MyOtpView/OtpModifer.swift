@@ -24,35 +24,35 @@ public struct OtpModifier: ViewModifier {
     var backgroundColor: Color
     
     public func body(content: Content) -> some View {
-        content
-            .multilineTextAlignment(.center)
-            .keyboardType(.numberPad)
-            .onReceive(Just(text)) { _ in limitText(textLimit) }
-            .frame(width: 45, height: 45)
-            .background(background)
-            .overlay(border)
-    }
-    
-    private var background: some View {
-        switch otpFieldType {
-        case .roundedWithBackground:
-            return AnyView(backgroundColor.cornerRadius(5))
-        case .bottomUnderline:
-            return AnyView(
-                VStack {
-                    Spacer()
-                    Rectangle()
-                        .frame(height: 2)
-                        .foregroundColor(activeBorderColor)
-                }
-            )
+
+            switch otpFieldType {
+            case .roundedWithBackground:
+                content
+                    .multilineTextAlignment(.center)
+                    .keyboardType(.numberPad)
+                    .onReceive(Just(text)) { _ in limitText(textLimit) }
+                    .frame(width: 45, height: 45)
+                    .background(Color.red.cornerRadius(5))
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(text.isEmpty ? inactiveBorderColor : activeBorderColor, lineWidth: 2)
+                    )
+            case .bottomUnderline:
+                content
+                    .multilineTextAlignment(.center)
+                    .keyboardType(.numberPad)
+                    .onReceive(Just(text)) { _ in limitText(textLimit) }
+                    .frame(width: 45, height: 45)
+                    .background(
+                        VStack {
+                            Spacer()
+                            Rectangle()
+                                .frame(width: 45, height: 2)
+                                .background(Color.red)
+                        }
+                    )
+            }
         }
-    }
-    
-    private var border: some View {
-        RoundedRectangle(cornerRadius: 5)
-            .stroke(text.isEmpty ? inactiveBorderColor : activeBorderColor, lineWidth: 2)
-    }
     
     private func limitText(_ upper: Int) {
         if text.count > upper {
