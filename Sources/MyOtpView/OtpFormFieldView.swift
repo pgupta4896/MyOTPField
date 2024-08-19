@@ -15,9 +15,13 @@ public struct OtpFormFieldView: View {
     var activeBorderColor: Color
     var inactiveBorderColor: Color
     var backgroundColor: Color
+    let height: CGFloat
+    let width: CGFloat
+    let cornerRadius: CGFloat
     
     @FocusState private var focusedField: Int?
     @State private var fieldTexts: [String]
+    @Binding var isClearField: Bool
     
     public init(
         otpCode: Binding<String>,
@@ -25,7 +29,11 @@ public struct OtpFormFieldView: View {
         otpFieldType: OtpFieldType = .roundedWithBackground,
         activeBorderColor: Color = .blue,
         inactiveBorderColor: Color = .gray,
-        backgroundColor: Color = .white
+        backgroundColor: Color = .white,
+        height: CGFloat = 45,
+        width: CGFloat = 45,
+        cornerRadius: CGFloat = 5,
+        isClearField:Binding<Bool>
     ) {
         self._otpCode = otpCode
         self.numberOfFields = numberOfFields
@@ -33,6 +41,10 @@ public struct OtpFormFieldView: View {
         self.activeBorderColor = activeBorderColor
         self.inactiveBorderColor = inactiveBorderColor
         self.backgroundColor = backgroundColor
+        self.height = height
+        self.width = width
+        self.cornerRadius = cornerRadius
+        self._isClearField = isClearField
         self._fieldTexts = State(initialValue: Array(repeating: "", count: numberOfFields))
     }
     
@@ -46,7 +58,10 @@ public struct OtpFormFieldView: View {
                         textLimit: 1,
                         activeBorderColor: activeBorderColor,
                         inactiveBorderColor: inactiveBorderColor,
-                        backgroundColor: backgroundColor
+                        backgroundColor: backgroundColor,
+                        height: height,
+                        width: width,
+                        cornerRadius: cornerRadius
                     ))
                     .focused($focusedField, equals: index)
                     .onChange(of: fieldTexts[index]) { _ in
@@ -62,5 +77,17 @@ public struct OtpFormFieldView: View {
         .onAppear {
             focusedField = 0
         }
+        .onChange(of: isClearField) { newValue in
+            if newValue {
+                clearFields()
+                isClearField = false // Reset isClearField after clearing
+            }
+        }
+    }
+    
+    private func clearFields() {
+        fieldTexts = Array(repeating: "", count: numberOfFields)
+        otpCode = ""
+        focusedField = 0
     }
 }
