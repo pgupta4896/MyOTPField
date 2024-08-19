@@ -21,3 +21,29 @@ Add the following to your `Package.swift` file:
 dependencies: [
     .package(url: "https://github.com/pgupta4896/MyOTPField.git", from: "1.0.0")
 ]
+
+how to Use 
+
+ VStack {
+            OtpFormFieldView(
+                otpCode: $otpCode,
+                numberOfFields: 6,
+                otpFieldType: .bottomUnderline,
+                activeBorderColor: .blue,
+                inactiveBorderColor: .gray,
+                backgroundColor: .clear
+            )
+            .padding()
+            
+            Button(action: {
+                print("Entered OTP Code: \(otpCode)")
+            }) {
+                Text("Verify")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+        }
+
+
